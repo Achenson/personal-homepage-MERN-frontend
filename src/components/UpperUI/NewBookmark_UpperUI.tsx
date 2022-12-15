@@ -42,8 +42,8 @@ import {
   SingleBookmarkData,
   SingleTabData,
 } from "../../utils/interfaces";
-import { TabDatabase_i } from "../../../../schema/types/tabType";
-import { BookmarkDatabase_i } from "../../../../schema/types/bookmarkType";
+import { TabDatabase_i } from "../../utils/tabType";
+import { BookmarkDatabase_i } from "../../utils/bookmarkType";
 
 interface Props {
   titleInput: string;
@@ -97,7 +97,7 @@ function NewBookmark_UpperUI({
   let tabs: TabDatabase_i[] | SingleTabData[];
 
   bookmarks = userIdOrNoId
-    ? (bookmarksDb as SingleBookmarkData[])
+    ? (bookmarksDb as BookmarkDatabase_i[])
     : bookmarksNotAuth;
   tabs = userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth;
 
@@ -150,6 +150,7 @@ function NewBookmark_UpperUI({
     // all tags always being added
     // let tagsInputArr_ToIds: string[] = ["ALL_TAGS"];
     let tagsInputArr_ToIds: string[] = [
+      // @ts-ignore
       tabs.find((obj) => !obj.deletable)?.id as string,
     ];
 
@@ -160,10 +161,13 @@ function NewBookmark_UpperUI({
     let counterForIndices = 0;
 
     tagsInputArr.forEach((el) => {
+      // @ts-ignore
       let tabCorrespondingToTag = tabs.find((obj) => obj.title === el);
 
       let sortedTabsInCol = tabs
+      // @ts-ignore
         .filter((obj) => obj.column === 1)
+        // @ts-ignore
         .sort((a, b) => a.priority - b.priority);
 
       let newTabPriority =
@@ -271,6 +275,7 @@ function NewBookmark_UpperUI({
       selectablesInputStr,
       notesTitlesArr,
       rssTitlesArr,
+      // @ts-ignore
       bookmarks,
       setErrors,
       setSelectablesListVis,

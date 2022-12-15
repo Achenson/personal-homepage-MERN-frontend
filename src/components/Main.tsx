@@ -23,8 +23,8 @@ import { useBookmarksDb } from "../state/hooks/useBookmarksDb";
 import { useWindowSize } from "../utils/funcs and hooks/useWindowSize";
 
 import { GlobalSettingsState } from "../utils/interfaces";
-import { BookmarkDatabase_i } from "../../../schema/types/bookmarkType";
-import { TabDatabase_i } from "../../../schema/types/tabType";
+import { BookmarkDatabase_i } from "../utils/bookmarkType";
+import { TabDatabase_i } from "../utils/tabType";
 
 interface Props {
   globalSettings: GlobalSettingsState;

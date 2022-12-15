@@ -21,7 +21,7 @@ import { useTabsDb } from "../../state/hooks/useTabsDb";
 import { useWindowSize } from "../../utils/funcs and hooks/useWindowSize";
 import { handleKeyDown_upperUiSetting } from "../../utils/funcs and hooks/handleKeyDown_upperUiSettings";
 
-import { TabDatabase_i } from "../../../../schema/types/tabType";
+import { TabDatabase_i } from "../../utils/tabType";
 import { GlobalSettingsState, SingleTabData } from "../../utils/interfaces";
 
 interface Props {
@@ -114,11 +114,14 @@ function GlobalSettings({
                 });
               }
               (tabs as TabDatabase_i[])
+              // @ts-ignore
                 .filter((obj) => obj.column >= el)
                 .sort((a, b) => {
+                  // @ts-ignore
                   if (a.title < b.title) {
                     return -1;
                   }
+                  // @ts-ignore
                   if (a.title > b.title) {
                     return 1;
                   }
@@ -126,6 +129,7 @@ function GlobalSettings({
                 })
                 .forEach((obj, i) => {
                   if (userIdOrNoId) {
+                    // @ts-ignore
                     editTab({ ...obj, column: el, priority: i });
                     return;
                   }

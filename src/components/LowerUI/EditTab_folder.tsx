@@ -43,7 +43,8 @@ function EditTab_folder({
   let bookmarks: BookmarkDatabase_i[] | SingleBookmarkData[];
 
   bookmarks = userIdOrNoId
-    ? (bookmarksDb as SingleBookmarkData[])
+
+    ? (bookmarksDb as  BookmarkDatabase_i[])
     : bookmarksNotAuth;
 
   let selectablesRef = useRef<HTMLInputElement>(null);
@@ -139,6 +140,7 @@ function EditTab_folder({
     let bookmarksInitial: string[] = [];
 
     bookmarks.forEach((obj) => {
+      // @ts-ignore
       bookmarksInitial.push(obj.title);
     });
 

@@ -57,9 +57,11 @@ function EditTab_RSS({
   );
 
   useEffect(() => {
+    // @ts-ignore
     if (!currentTab.itemsPerPage) {
       setItemsPerPageInitial(globalSettings.itemsPerPage);
     }
+    // @ts-ignore
   }, [globalSettings.itemsPerPage, currentTab.itemsPerPage]);
 
   return (
@@ -208,6 +210,7 @@ function EditTab_RSS({
             if (userIdOrNoId) {
               editTab({
                 ...currentTab,
+                // @ts-ignore
                 date: null,
                 description: null,
                 itemsPerPage: null,

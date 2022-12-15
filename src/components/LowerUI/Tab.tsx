@@ -34,8 +34,8 @@ import {
   SingleBookmarkData,
   SingleTabData,
 } from "../../utils/interfaces";
-import { BookmarkDatabase_i } from "../../../../schema/types/bookmarkType";
-import { TabDatabase_i } from "../../../../schema/types/tabType";
+import { BookmarkDatabase_i } from "../../utils/bookmarkType";
+import { TabDatabase_i } from "../../utils/tabType";
 
 interface Item {
   type: string;
@@ -532,8 +532,11 @@ function Tab({
               ? (bookmarksDb as BookmarkDatabase_i[])
               : (bookmarksNotAuth as SingleBookmarkData[])
             )
+            // @ts-ignore
               .filter((el) => el.tags.indexOf(tabID) > -1)
+              // @ts-ignore
               .sort((a, b) => (a.title > b.title ? 1 : -1))
+              // @ts-ignore
               .map((el, i) => {
                 return (
                   <SingleBookmark

@@ -75,7 +75,7 @@ function EditTab({
   const bookmarksDb = useBookmarksDb((store) => store.bookmarksDb);
 
   bookmarks = userIdOrNoId
-    ? (bookmarksDb as SingleBookmarkData[])
+    ? (bookmarksDb as BookmarkDatabase_i[])
     : bookmarksNotAuth;
   tabs = userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth;
 
@@ -102,11 +102,13 @@ function EditTab({
     }
   }, []);
 
+  // @ts-ignore
   let tabTitle = currentTab.title;
 
   let rssLink: string | null | undefined = "no bookmark";
 
   if (tabType === "rss") {
+    // @ts-ignore
     rssLink = currentTab.rssLink;
   }
 
@@ -115,6 +117,7 @@ function EditTab({
 
   // for note only
   const [textAreaValue, setTextAreaValue] = useState<string | null>(
+    // @ts-ignore
     currentTab.noteInput as string | null
   );
 
@@ -125,14 +128,18 @@ function EditTab({
   const [rssLinkInput, setRssLinkInput] = useState<string>(rssLink as string);
 
   const [descriptionCheckbox, setDescriptionCheckbox] = useState(() => {
+    // @ts-ignore
     if (typeof currentTab.description === "boolean") {
+      // @ts-ignore
       return currentTab.description;
     }
 
     return globalSettings.description;
   });
   const [dateCheckbox, setDateCheckbox] = useState(() => {
+    // @ts-ignore
     if (typeof currentTab.date === "boolean") {
+      // @ts-ignore
       return currentTab.date;
     }
     return globalSettings.date;
@@ -143,7 +150,9 @@ function EditTab({
   const [wasCheckboxClicked, setWasCheckboxClicked] = useState(false);
 
   const [rssItemsPerPage, setRssItemsPerPage] = useState(() => {
+    // @ts-ignore
     if (typeof currentTab.itemsPerPage === "number") {
+      // @ts-ignore
       return currentTab.itemsPerPage;
     }
     return globalSettings.itemsPerPage;
@@ -166,12 +175,14 @@ function EditTab({
 
   function calcArrOfBookmarksNames() {
     // filtered liknks
+    // @ts-ignore
     let filteredBookmarks = bookmarks.filter(
+      // @ts-ignore
       (obj) => obj.tags.indexOf(currentTab.id) > -1
     );
 
     let arrOfBookmarksNames: string[] = [];
-
+// @ts-ignore
     filteredBookmarks.forEach((obj) => {
       arrOfBookmarksNames.push(obj.title);
     });
@@ -194,6 +205,7 @@ function EditTab({
   });
 
   const [tabOpenedByDefault, setTabOpenedByDefault] = useState(
+    // @ts-ignore
     currentTab.openedByDefault
   );
 
@@ -201,6 +213,7 @@ function EditTab({
 
   function titleWidth() {
     // if (tabType === "note" || tabID === "ALL_TAGS") {
+      // @ts-ignore
     if (tabType === "note" || !currentTab.deletable) {
       return "40px";
     }
@@ -254,6 +267,7 @@ function EditTab({
       if (wasTabOpenClicked) setTabOpened(tabOpenedByDefault);
       editTab({
         ...currentTab,
+        // @ts-ignore
         title: tabTitleInput,
         openedByDefault: tabOpenedByDefault,
       });
@@ -261,6 +275,7 @@ function EditTab({
       console.log(bookmarksInputArr);
 
       let finalBookmarks = (bookmarks as BookmarkDatabase_i[]).filter((obj) =>
+      // @ts-ignore
         bookmarksInputArr.includes(obj.title)
       );
 
@@ -276,11 +291,13 @@ function EditTab({
       // deleting =======
       // initial bookmarks
       let initialBookmarks = (bookmarks as BookmarkDatabase_i[]).filter((obj) =>
+      // @ts-ignore
         arrOfBookmarksNames.includes(obj.title)
       );
 
       initialBookmarks.forEach((obj) => {
         // if final bookmarks does not include an initial bookmark
+        // @ts-ignore
         if (!bookmarksInputArr.includes(obj.title)) {
           let newTags = [...obj.tags];
           // delete tabID from this initial bookmark
@@ -297,6 +314,7 @@ function EditTab({
       if (wasTabOpenClicked) setTabOpened(tabOpenedByDefault);
       editTab({
         ...currentTab,
+        // @ts-ignore
         title: tabTitleInput,
         openedByDefault: tabOpenedByDefault,
         noteInput: textAreaValue,
@@ -307,6 +325,7 @@ function EditTab({
       if (wasTabOpenClicked) setTabOpened(tabOpenedByDefault);
       editTab({
         ...currentTab,
+        // @ts-ignore
         title: tabTitleInput,
         openedByDefault: tabOpenedByDefault,
         rssLink: rssLinkInput,
@@ -329,6 +348,7 @@ function EditTab({
     }
 
     let isThereAnError = tabErrorHandling(
+      // @ts-ignore
       bookmarks,
       tabTitleInput,
       setErrors,
@@ -336,6 +356,7 @@ function EditTab({
       tabType,
       bookmarksInputArr,
       rssLinkInput,
+      // @ts-ignore
       tabs,
       textAreaValue,
       "edit",
@@ -351,6 +372,7 @@ function EditTab({
   }
 
   function deleteTabLogic() {
+    // @ts-ignore
     if (!currentTab.deletable) {
       // setNoDeletionErrorVis(true);
       setErrors({
@@ -416,7 +438,10 @@ function EditTab({
               }}
             />
             {/* {tabType === "folder" && tabID !== "ALL_TAGS" && ( */}
-            {tabType === "folder" && currentTab.deletable && (
+            // @ts-ignore
+            {
+              // @ts-ignore
+            tabType === "folder" && currentTab.deletable && (
               <div
                 style={{ height: "18px", width: "18px" }}
                 className="flex-none -mr-1"
@@ -425,7 +450,10 @@ function EditTab({
           </div>
 
           {/* {tabType === "folder" && tabID !== "ALL_TAGS" && ( */}
-          {tabType === "folder" && currentTab.deletable && (
+        
+          {
+            // @ts-ignore
+          tabType === "folder" && currentTab.deletable && (
             <EditTab_folder
               selectablesListVis={selectablesListVis}
               setSelectablesListVis={setSelectablesListVis}
@@ -484,6 +512,7 @@ function EditTab({
               <button
                 className="h-6 w-6 focus-2"
                 onClick={() => {
+                  // @ts-ignore
                   setTabOpenedByDefault((b) => !b);
                   setWasTabOpenClicked(true);
                   setSelectablesListVis(false);
@@ -496,6 +525,7 @@ function EditTab({
               <button
                 className="h-6 w-6 focus-2"
                 onClick={() => {
+                  // @ts-ignore
                   setTabOpenedByDefault((b) => !b);
                   setWasTabOpenClicked(true);
                   setSelectablesListVis(false);

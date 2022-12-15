@@ -1,6 +1,6 @@
 import create from "zustand";
 
-import { BookmarkDatabase_i } from "../../../../schema/types/bookmarkType";
+import { BookmarkDatabase_i } from "../../utils/bookmarkType";
 
 export type ReexecuteBookmarks = (opts?: Partial<any> | undefined) => void;
 

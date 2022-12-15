@@ -1,13 +1,12 @@
-import graphql = require("graphql");
-const {
+import {
   GraphQLObjectType,
   GraphQLID,
   GraphQLInt,
   GraphQLString,
   GraphQLBoolean,
-} = graphql;
+} from "graphql";
 
-import { SingleTabDataBasic } from "../../client/src/utils/interfaces";
+import { SingleTabDataBasic } from "../utils/interfaces";
 
 export interface TabDatabase_i extends SingleTabDataBasic {
   id: string;

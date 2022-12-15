@@ -15,8 +15,8 @@ import {
   SingleBookmarkData,
   SingleTabData,
 } from "../../utils/interfaces";
-import { BookmarkDatabase_i } from "../../../../schema/types/bookmarkType";
-import { TabDatabase_i } from "../../../../schema/types/tabType";
+import { BookmarkDatabase_i } from "../../utils/bookmarkType";
+import { TabDatabase_i } from "../../utils/tabType";
 
 interface Props {
   bookmarkComponentType: "new_upperUI" | "new_lowerUI" | "edit";
@@ -62,16 +62,17 @@ function Bookmark_newAndEdit({
   const bookmarksDb = useBookmarksDb((store) => store.bookmarksDb);
 
   bookmarks = userIdOrNoId
-    ? (bookmarksDb as SingleBookmarkData[])
+    ? (bookmarksDb as  BookmarkDatabase_i[])
     : bookmarksNotAuth;
   tabs = userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth;
 
   let currentBookmark: SingleBookmarkData | undefined;
 
   if (bookmarkComponentType === "edit") {
+    // @ts-ignore
     currentBookmark = bookmarks.filter((obj) => obj.id === bookmarkId)[0];
   }
-
+// @ts-ignore
   let foldersTab = tabs.filter((obj) => obj.type === "folder");
 
   const [titleInput, setTitleInput] = useState<string>(
@@ -98,6 +99,7 @@ function Bookmark_newAndEdit({
     }
 
     if (bookmarkComponentType === "new_lowerUI") {
+      // @ts-ignore
       if (tabTitle !== tabs.find((obj) => !obj.deletable)?.title) {
         return tabTitle as string;
       } else return "";
@@ -108,8 +110,10 @@ function Bookmark_newAndEdit({
     tabs.forEach((obj) => {
       if (
         (currentBookmark as SingleBookmarkData).tags.indexOf(obj.id) > -1 &&
+        // @ts-ignore
         obj.deletable
       ) {
+        // @ts-ignore
         arrOut.push(obj.title);
       }
     });
@@ -133,11 +137,14 @@ function Bookmark_newAndEdit({
   let rssTitlesArr: string[] = [];
 
   tabs.forEach((obj) => {
+    // @ts-ignore
     if (obj.type === "note") {
+      // @ts-ignore
       notesTitlesArr.push(obj.title);
     }
-
+// @ts-ignore
     if (obj.type === "rss") {
+      // @ts-ignore
       rssTitlesArr.push(obj.title);
     }
   });
@@ -215,7 +222,7 @@ function Bookmark_newAndEdit({
 
   function makeInitialTags(): string[] {
     let tags: string[] = [];
-
+// @ts-ignore
     foldersTab.forEach((obj) => {
       if (obj.deletable) {
         tags.push(obj.title);
@@ -257,6 +264,7 @@ function Bookmark_newAndEdit({
       ) : (
         <Bookmark_lowerUI
           {...bookmark_props}
+          // @ts-ignore
           currentBookmark={currentBookmark as BookmarkDatabase_i}
           bookmarkId={bookmarkId as string}
           colNumber={colNumber as number}

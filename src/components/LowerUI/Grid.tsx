@@ -45,7 +45,7 @@ function Grid({
   let tabs: TabDatabase_i[] | SingleTabData[];
 
   bookmarks = userIdOrNoId
-    ? (bookmarksDb as SingleBookmarkData[])
+    ? (bookmarksDb as  BookmarkDatabase_i[])
     : bookmarksNotAuth;
   tabs = userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth;
 
@@ -101,6 +101,7 @@ function Grid({
     if (resetColors) {
       userIdOrNoId
         ? (tabs as TabDatabase_i[]).forEach((obj) => {
+          // @ts-ignore
             editTab({ ...obj, color: null });
           })
         : resetAllTabColors();

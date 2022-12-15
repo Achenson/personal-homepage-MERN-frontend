@@ -1,13 +1,12 @@
-import graphql = require("graphql");
-const {
+import {
   GraphQLObjectType,
   GraphQLID,
   GraphQLString,
   GraphQLBoolean,
   GraphQLList,
-} = graphql;
+} from "graphql";
 
-import { SingleBookmarkDataBasic } from "../../client/src/utils/interfaces";
+import { SingleBookmarkDataBasic } from "../utils/interfaces";
 
 export interface BookmarkLocal_i extends SingleBookmarkDataBasic {
   tagIndices: number[];

@@ -94,7 +94,9 @@ function Column({
   let sortedTabs: TabDatabase_i[] | SingleTabData[];
 
   sortedTabs = (userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth)
+  // @ts-ignore
     .filter((el) => el.column === colNumber)
+    // @ts-ignore
     .sort((a, b) => a.priority - b.priority);
 
   let lastTabId: string | null;
@@ -106,6 +108,7 @@ function Column({
 
   let tabDataLength = (
     userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth
+    // @ts-ignore
   ).filter((el) => el.column === colNumber).length;
 
   function isThisLastGap(lastTabId: string | null, tabID: string) {
@@ -165,9 +168,12 @@ function Column({
       }}
     >
       {(userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth)
+      // @ts-ignore
         .filter((el) => el.column === colNumber)
         // lower priority, higher in the column
+        // @ts-ignore
         .sort((a, b) => a.priority - b.priority)
+        // @ts-ignore
         .map((el, i) => {
           return (
             <div

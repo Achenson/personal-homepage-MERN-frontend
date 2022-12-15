@@ -2,7 +2,7 @@ import create from "zustand";
 
 import { tabsDataDbInit } from "../../state/data/tabsData";
 
-import { TabDatabase_i } from "../../../../schema/types/tabType";
+import { TabDatabase_i } from "../../utils/tabType";
 
 interface UseTabsDb {
   tabsDb: TabDatabase_i[];

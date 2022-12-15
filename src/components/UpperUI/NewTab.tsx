@@ -41,8 +41,8 @@ import {
   SingleBookmarkData,
   SingleTabData,
 } from "../../utils/interfaces";
-import { TabDatabase_i } from "../../../../schema/types/tabType";
-import { BookmarkDatabase_i } from "../../../../schema/types/bookmarkType";
+import { TabDatabase_i } from "../../utils/tabType";
+import { BookmarkDatabase_i } from "../../utils/bookmarkType";
 
 interface Props {
   tabType: "folder" | "note" | "rss";
@@ -69,7 +69,7 @@ function NewTab({
   let tabs: TabDatabase_i[] | SingleTabData[];
 
   bookmarks = userIdOrNoId
-    ? (bookmarksDb as SingleBookmarkData[])
+    ? (bookmarksDb as BookmarkDatabase_i[])
     : bookmarksNotAuth;
   tabs = userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth;
 
@@ -192,6 +192,7 @@ function NewTab({
     let bookmarksInitial: string[] = [];
 
     bookmarks.forEach((obj) => {
+      // @ts-ignore
       bookmarksInitial.push(obj.title);
     });
 
@@ -253,7 +254,9 @@ function NewTab({
 
   function addTabWrapper() {
     let sortedTabsInCol = tabs
+    // @ts-ignore
       .filter((obj) => obj.column === tabColumnInput)
+      // @ts-ignore
       .sort((a, b) => a.priority - b.priority);
 
     let newTabPriority: number = 0;
@@ -298,6 +301,7 @@ function NewTab({
           )
         ).then((result) => {
           let filteredBookmarks = (bookmarks as BookmarkDatabase_i[]).filter(
+            // @ts-ignore
             (obj) => bookmarksInputArr.indexOf(obj.title) > -1
           );
           filteredBookmarks.forEach((obj) => {
@@ -361,6 +365,7 @@ function NewTab({
 
   function saveFunc() {
     let isThereAnError = tabErrorHandling(
+      // @ts-ignore
       bookmarks,
       tabTitleInput,
       setErrors,
@@ -368,6 +373,7 @@ function NewTab({
       tabType,
       bookmarksInputArr,
       rssLinkInput,
+      // @ts-ignore
       tabs,
       textAreaValue,
       "new"

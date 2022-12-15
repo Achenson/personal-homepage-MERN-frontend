@@ -106,7 +106,7 @@ function Bookmark_lowerUI({
   const getTabsToDelete = useBookmarks((store) => store.getTabsToDelete);
 
   bookmarks = userIdOrNoId
-    ? (bookmarksDb as SingleBookmarkData[])
+    ? (bookmarksDb as BookmarkDatabase_i[])
     : bookmarksNotAuth;
   tabs = userIdOrNoId ? (tabsDb as TabDatabase_i[]) : tabsNotAuth;
 
@@ -169,6 +169,7 @@ function Bookmark_lowerUI({
     // let tagsInputArr_ToIds: string[] = ["ALL_TAGS"];
     // non deletable folder("all bookmarks") always in the arr
     let tagsInputArr_ToIds: string[] = [
+      // @ts-ignore
       tabs.find((obj) => !obj.deletable)?.id as string,
     ];
     // let newTabsToAdd: SingleTabData[] = [];
@@ -178,10 +179,13 @@ function Bookmark_lowerUI({
     let counterForIndices = 0;
 
     tagsInputArr.forEach((el, i) => {
+      // @ts-ignore
       let tabForCurrentTag = tabs.find((obj) => obj.title === el);
 
       let sortedTabsInCol = tabs
+      // @ts-ignore
         .filter((obj) => obj.column === colNumber)
+        // @ts-ignore
         .sort((a, b) => a.priority - b.priority);
 
       let newTabPriority =
@@ -230,6 +234,7 @@ function Bookmark_lowerUI({
           tagsInputArr_ToIds.push(obj.data.addTab.id);
         });
       } else {
+        // @ts-ignore
         addTabsNotAuth(newTabsToAdd);
       }
     }
@@ -255,6 +260,7 @@ function Bookmark_lowerUI({
           titleInput,
           urlInput,
           tagsInputArr_ToIds,
+          // @ts-ignore
           currentBookmark.defaultFaviconFallback
         );
       } else {
@@ -285,9 +291,11 @@ function Bookmark_lowerUI({
         editBookmark({
           id: bookmarkId,
           userId: globalSettings.userId,
+          // @ts-ignore
           title: titleInput,
           URL: urlInput,
           tags: tagsInputArr_ToIds,
+          // @ts-ignore
           defaultFaviconFallback: currentBookmark.defaultFaviconFallback,
         }).then((result) => {
           if (result.error) {
@@ -341,6 +349,7 @@ function Bookmark_lowerUI({
       tabs: TabDatabase_i[]
     ) {
       for (let tabID of tabIDsToDelete) {
+        // @ts-ignore
         if (!tabs.filter((el) => el.id === tabID)[0].deletable) {
           continue;
         }
@@ -415,6 +424,7 @@ function Bookmark_lowerUI({
       selectablesInputStr,
       notesTitlesArr,
       rssTitlesArr,
+      // @ts-ignore
       bookmarks,
       setErrors,
       setSelectablesListVis,

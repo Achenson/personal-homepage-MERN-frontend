@@ -69,6 +69,7 @@ function SingleColor_Tab({
       `}
       onClick={() => {
         userIdOrNoId
+        // @ts-ignore
           ? editTab({ ...(currentTab as TabDatabase_i), color: color })
           : setTabColor(color, tabID);
 

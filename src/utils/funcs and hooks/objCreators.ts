@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { SingleTabData, SingleBookmarkData } from "../interfaces";
-import { BookmarkDatabase_i } from "../../../../schema/types/bookmarkType";
-import { TabDatabase_i } from "../../../../schema/types/tabType";
+import { BookmarkDatabase_i } from "../../utils/bookmarkType";
+import { TabDatabase_i } from "../../utils/tabType";
 
 export function createBasicTab(
   title: string,
