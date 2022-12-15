@@ -1,0 +1,734 @@
+Typescript & tailwing manual updated:
+
+tailwind ccs && typescript:
+
+1. npx create-react-app my-app --template typescript !!
+2. npm i -D tailwindcss postcss-cli autoprefixer 
+2.5 npm i -D  postcss !
+3. npx tailwind init tailwind.js --full (all settings will be visible) 
+(for some reason has to be tailwind.js not tailwind.config.js!)
+4. change tailwind.js name, so it won't work anymory, but all settings can be checked
+5. npx tailwind init tailwind.js 
+(this time without -- full flag -> in this file we will put only our custom settings)
+6. postcss.config.js -> 
+
+const tailwindcss = require("tailwindcss");
+module.exports = {
+  plugins: [tailwindcss("./tailwind.js"), require("autoprefixer")],
+};
+
+7.  src/assets/main.css
+
+    src/assets/tailwind.css
+    @import "tailwindcss/base";
+    @import "tailwindcss/components";
+    @import "tailwindcss/utilities";
+
+8. delete both .ccs file in root, delete react logo
+
+9. package.json:
+
+"start": "npm run watch:css && react-scripts start",
+"build": "npm run build:css && react-scripts build",
+   ...
+"build:css": "postcss src/assets/tailwind.css -o src/assets/main.css",
+"watch:css": "postcss src/assets/tailwind.css -o src/assets/main.css"
+
+10. Tailwind css intelisense extension (reinstall if not working)
+
+11.  index.tsx 
+
+    import './assets/main.css';
+
+!!!!!
+12. after every change in config file (tailwind.js) run npm run build:css
+(run it once at the beginning!)
+!!!!!
+
+13. purgecss when finished with the project:
+
+exampe in tailwind.js: 
+  purge: {
+    content: ["./src/**/*.html", "./src/**/*.ts", "./src/**/*.tsx"],
+    safelist: [
+      /^bg/,
+      /^ring/,
+      /^hover:text/,
+      /^text/,
+      /^border/,
+      /^hover:bg/,
+      /^w-/
+    ],
+
+- all classes that won't be purged should be included as a plain text, no js!
+- css will be purged when "enabled: true," line is added to tailwind.js (see notes serverside)
+(old note: NODE_ENV is set to production
+ automatically after build command in create-react-app ??) 
+
+53. RSS -> proxy server or fetching from backend
+
+
+NOTES: 
+1. make background extend with the content: min-h-screen! (min-height: 100vh;)
+  for image: bg-cover bg-fixed(so the image doesn't scale with contene, )
+2. Last Gap in a Column - 
+ Column: overflow-hidden & Gap: h-full (height: 100%) not working because EditTab
+ and edit bookmakr need overflow
+ solution: absolute invisible last gap stretching screen height (flex-grow)
+3. Grid closeAllTabs is being set to false on the next render after it is being set to true
+6. fixed too many renders in newTab_UpperUI: initialTags could have not been a var in component:
+in that case the value would be calc on each render which would cause useEffect to crash the app (too many renders)
+instead: initialTags in useState.
+7. hooks lifeCycle: useEffect is called when everything is rendered. Just before that, previous cleanup effect is calleed
+child component is called after everything is done in parent component
+Anytime something is changed, the code for component runs from the begining. But lazy state initialization is omitten
+UseEffect does not wait for any change - instead it wait until some state changes
+8. going back one commit: select prev commit in git history 2. git pull 3. resolving conflicts (accept current chagne) 4. git add * 5. git commit
+9. Regex: word boundaries! (^ & &). in newRegex \ needs to be escaped (because it has special meaning in stringe. eg. \n)! but / dont (but it has to be ecspaped in normal
+regex becaus / / are used to open/close regex) 
+10. absulute positioning with width taken form other element eg. input: wrap them with div (relative pos) with same style as input (but leave styles on input also!)
+11. useQuery: to get different queries throughout the app, names of the queries need to be different! (here: tabID)
+12. disabling cors on chrome:
+shortcut with: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+13. proper background visibility with whole column on drag effect:
+additional div on Grid (so there is space for colors/editable), Grid - overflow-hidden
+14. Tab setTimout: useEffect, unmounting necessary!
+15. Main -> manipulating document body directy for hidding scrollbar -> fine, because
+react is manipulatin only #app & everything below, no possible conflict with anything above #app
+https://stackoverflow.com/questions/39962757/prevent-scrolling-using-css-on-react-rendered-components
+16. uneven input length fix: flex-none on labels on the left (that way the arbitrary width can be set)
+
+TO DO:
+
+DONE 1. tailwind - purgecss at the end of the project DONE
+DONE 1.5 make all classNames non string concatenated or whitelist some classes in purgeCSS
+bg-     /^bg/
+ring- M /^ring/
+[Tab] hover:${hoverText(    M     /^hover:text/
+                    finalTabColor
+                  )} cursor-pointer`}
+[BackgroudColor, BackgroundSettings]text-${backgroundColor}`   /^text/
+[BackgroundSettings] border-${uiColor} ;  hover:bg-${uiColor}  /^border/  /^hover:bg/
+
+[ColumnColor_OneColor]w-${calcWidth(globalSettings.numberOfCols)} /^w-/
+DONE
+X? 2. react-scripts 4.0.0 not working with typescript (vulnerability) ?X
+DONE 3. bookmark move icon - hide when moving? DONE
+ DONE 4. icon colors on darkBackground DONE but 1 purple & 1 pink not perfect? DONE 
+DONE 5. ColorsToChoose -> better code DONE
+DONE 5. EditLink & NewLink -> unify DONE
+XXX 6. edit bookmark & bookkmarks for color -> join? XXX
+XXX 7. one function for bookmark indexXXX will be deleted for backend?
+DONE 8. "all" bookmark should be non-deletable, non-editable? DONE
+XXX 10. undo link XX
+XXX 11. move grid logic to Main? XXX
+DONE 12. components folders? DONE
+DONE 16. newLink & newLink_UpperUI -> tags not aligned DONE
+DONE 23. bg-color vs text color of folders DONE
+DONE 24. bookmark: almost same function for icons & text color, unify DONE
+DONE 36. diff color for diff columns? DONE
+DONE 39. Folder: abandon darkest colors? btn like styling not visible DONE
+DONE 86. bigger draggable space in GapAfterBookmark if column is empty DONE
+DONR 70. make column component DONE
+DONE 71. Column -> make them stack when the screen is smaller DONE 
+
+DONE 3. how to properly set links !!! works on firefox DONE
+DONE 8.5 "all" should be added as a tag automatically & should not be visible DONE
+DONE 9. auto-completing tags when adding links DONE
+DONE 14. newLink -> save & cancel icons not perfectly in the middle DONE (but in a perfect way?)
+DONE 15. UpperRightMenu on hover, boders for newLink & newBookmark -> default App color? DONE
+DONE 17. link/bookmark/folder -> consistent naming! DONE
+DONE 18. newTab_upperUI -> menu with existing bookmarks to choose DONE
+DONE 19. bookmark priorities DONE
+DONE 20. note -> newLines not working DONE !!! white-spase css
+DONE 21. newTab -> better input for column DONE
+DONE 22. bookmark/tab title, tags -> spaces should be permitted too DONE
+DONE 25. Tab better css (more like button) DONE
+XX 26. black icont -> not contrastive enough on hover? XX
+DONE 27. auto close bookmark menus when clicking sth else 
+/ only allow colors and edit at the same time when
+/ close when opening a Tab
+/ closeAllTabs should also close edit colors & tab edits DONE
+XX 28. diff between iGoogle folders and mineXX
+DONE 30. colors for UI dep on folder color DONE
+??? 31. margin for new item -> always on? ???
+DONE 32. colors placement in default color settings DONE
+DONe 33. change light gray to white on some background in Folders Done ?
+XXX 34. change folders/notes shadows on darker backgrounds XXX
+XXX 35. default color settings should be working only if new folder/note is being added? XXX
+DONE 37. add background color/header column color  DONE
+XXX 38. Folders: not wide enough relative to columns?XXX 
+DONE 40. Tab darkBackground hover DONE
+XXX 41. better cancel btn in Colors_UpperUIXXX
+XXX 42. changing notes color? XXX
+XXX 43. upperUI changing colors -> lower, do not dim the background XXX
+XXX 44. upperUI changing colors -> white, semiTransparent, transparent XXX
+DONE 45. bug: nothing shortest width: no other columns? DONE
+DONE 47. clean tailwind.js -> color naming DONE [eg. 300, 303, 330, 333 for variants, so it goes well with regex]
+XXX 48. white color select border to change? XXX
+DONE 49. UpperRightMenu icons change to icon without pluses DONE
+DONE 50. "all" is not being updated with new links DONE
+X 51. Double nested string problem in classes - XXX uiColorState on Hover in RSS?XXX  Setting_Upper_UI X
+XXX 52. make SingleRssNews same height alwaysXXX
+DONE 54. notes default colors: initial colors not selected DONE
+DONE 57. get rid of ts ignore lines DONE
+DONE 58. change all bookmark index/ tab index logic to bookmark ID DONE
+DONE 59. EditTab errors naming DONE
+DONE 60. EditTab: RSS & note title input right margin get rid off DONE
+DONE 61. styling numerical inputs DONE
+?? 62. input htmlFor ??
+DONE 63. rss edit -> reset to default settings DONE
+DONE 64. rss description DONE
+DONE 65. rss linksPerPage DONE
+DONE 66. createObj should calc priority so new folder land last in a given column DONE
+xxx 67. RSS refresh button xx reactQuery is taking care of this
+DONE 68. note & RSS improve SVG icon placement DONE
+DONE 72. Column & Grid -> clean code between them DONE
+DONE 73. Main bg is not covering everything if content is too large DONE
+DONE ? 74. forms -> consistency in aligning ? DONE
+DONE 75. Column & Column_img -> less code needed -> one Column DONE
+DONE 76. transparent colors for color control (UpperLeftMenu) if background img is on issue DONE
+DONE 77. GapAfterTab background color vs Column background color: make last Gap height longer? DONE (see notes)
+DONE78. UpperLeftMenu weakly visible if image in the background -> larger borders? DONE (non transparent colors)
+DONE 79. note background -> gray? DONE
+DONE 80. warning: two childer with the same key DONE
+DONE 81. potential problem: if changing bookmarks within column only, the priority nrs can reach v.high numbers DONE
+DONE 84. always open property on folder DONE
+DONE 85. get rid of bookmark priorities being displayed in the end DONE
+XXX 87. rss reader cannot be initially always opened XXX can be
+DONE 88. columnImg -> make color cntrls more visible DONE
+DONE 89. add second image for the background DONE (2 addition img added)
+DONE 91. && operators instead of ? DONE (&& return first falsy value or last value)
+DONE 92. two !! at the begining GapAfterTab (converting value to boolean type) DONE
+DONE 93. GapAfterBookmark: decide isOver color (bookmark being dragged dependend, or column dependend) DONE
+XXX 94. no x gaps between columns? XXX
+DONE 95. UpperLeftMenu: inner border too wide? DONE
+DONE 96. colors components -> make them more consistent! SingleColor_Default(columns & defaults) vs SingleColor_Default_Img (columns only)
+  ColorsToChooseDefault used both for columns and Defaults vs ColorsToChoose DONE
+DONE  97. change positioning of colors to choose for columns DONE
+DONE 101. update itemsPerPage immediately when itemsPerPage is changed DONE
+DONE 102. tab get dragged when trying to edit sth in EditBookmark DoNE
+XXX 103 RSS make control arrows smaller? XXX
+??? 105. gap-y doesn't look good in case of single column size ??? 
+DONE 106. change Upper_UI components naming? DONE
+XXX 107. Background_UpperUI: proper contidion inside conditional in className - check with some other components XXX
+DONE 108. btn animation, better Background settings btn DONE (transition-colors duration-150) sdsd
+DONE 109. bug: note default color not selected by border DONE
+DONE 110. UpperRightUI does not look good in imgBackgroud mode, should be higher? DONE (higher + border)
+DONE 111. bigger droppable areas! DONE
+DONE 112. backgroundSettings how to choose default img DONE
+XXX 114. persist open state of bookmark (if is closed by default) if it is being dragged? XXX
+DONE 115. rss cannot be always open? bug DONE
+DONE 116. BUG: rss cannot be properly moved when opened! DONE
+XXX 115. change icon for bookmark settings? XXX
+XXX 116. separate line for deleting bookmark XXX
+DONE 117. rename EditBookmarkTitle DONE
+??? 118. 1st column bug on color change ???
+XXX 19. confirmation for folder delete XXX
+??? 121. opened -> open??
+??? 122. is save btn needed in edit bookmark ???
+XXX 123 EditBookmarkTitle gray border test diff options XXX
+DONE 125. button inside svgs -> not a good idea, just make svgs clickable? DONE
+DONE 126. bug: wrong background settings on start DONE
+DONE 127. move BackgroudColor and Reset to upperUI components DONE
+DONE 128. Tab: merge 3 visibilities (from different folders types) into one? DONE (useReducer used)
+DONE 129. Reset: version for background image on DONE
+DONE 131. to make delayed Icons Appearence on Folders DONE
+DONE 132. Bookmark missing hooks DONE
+DONE 133. Reset does not work on RSS and all? DONE
+DONE 134. Reset should also close all BookmarkEdits DONE
+DONE 125: Bug: Reset DONE
+DONE 126. make a note about Grid's logic for setting closeAllFolders !!! DONE
+DONE 127. better hover effect on UpperLeftMenu's columns color contro DONE
+DONE 128. colums color control - problem with border width when clicked in some case (oneColorForAllCols also) DONE
+DONE ? 129. change components to container styles divs instead of mx margins everywhere ? DONE
+DONE 131. BUG: after saving after changin title, Folders with type "folder" can be deleted even if deletable set to false, +problems with priority render DONE
+??? 132. bug: unwanted gap when dragging folder to empty column nr 1 ???
+??? 133. hide Left UI btn ???
+DONE 134.5 React snippets! DONE
+??? 135. column numbers: change bookmarks colNumber & priority if changed down ???
+DONE 137. input's left padding DONE (pl-px)
+DONE 138. new bookmark: not entering any tag should be optional DONE
+DONE 139. make a note about fixed too many renders in NewTab_UpperUI ! initialTags could have not been a var in component DONE
+DONE 140. make notes about useState, useEffect life cycle DONE
+DONE 141. make note about resolving conflict when going back one commit:  DONE
+DONE 143. make NewBookmark_UpperUI save and cancel little lower DONE
+DONE 144. NOTE Regex: word boundary & the need to escape different character in new RegEx! ( / vs \) DONE
+XXX 145. closing tags when tags are empty is not needed? as Save & cancel are visible anyway XXX
+XXX ? 146. selectables regex works also if there is more than one space: to change or not? ?XXX 
+DONE147. unify EditBookmark and NewBookmark_UpperUI & NewBookmark DONE
+DONE 148. EditBookmark paddings DONE
+DONE 149. make Reset hide also edits DONE
+DONE 150. Tabs: only 1 edit should be opened at the same time DONE
+DONE 151. In Folder Edit: it should be possible to choose existing bookmarks similar to new Tab DONE
+DONE 152. move SelectableList from UpperUI DONE
+??? 153. globalSetting - change number of columns to sth else ???
+XXX 154. input width problem for tags in NewBookmark & EditBookmark & new?_upperUI XXX
+DONE 155. different name for TagsList: this is also being used for Bookmarks DONE
+DONE 156. always open lock should open folder immediately DONE
+DONE 157. clicking on tab should close edit DONE
+DONE 158. Links' tags are opened on first render (NewLink is OK) - should be opened on focus!? DONE
+DONE 159. tags suggestions width and marginLeft should not be hardcoded DONE
+DONE 160. unify paddings etc between EditTab & EditBookmark DONE
+DONE 161. use {...params} is props somewhere if there is repetition? DONE
+DONE 162. RSS links inputs margin problem DONE again
+DONE 163. unify css logic between diff folder type in editTab DONE
+?? 166. data: bookmarks should have IDs (done), tabsshould have ids of links in an array ( change when backend available)?? 
+DONE 167. EditTab - not possible to save if changing links with mouse DONE
+DONE 168. setting thumbnail on links - choose library DONE -> to implement on backend: working npm package to use: scrap-favicon
+DONE 169. NewBookmark x2: tags should not be the same as rss tiles (already implemented for notes) DONE
+DONE 170. adding new bookmark to tab should have this tab title as a tag automatically DONE
+DONE 172. folder all: bookmark should not be editable DONE
+XXX 173. newbookmark lower ui: choosing tags should not be possible (only this tag & all) XXX
+DONE 174. check all bookmarks function useState in EditTab DONE
+DONE 176. new link - autocomplete on focus, not on change DONE
+DONE 177. autocomplete field in the grid moves out of divs DONE
+DONE 178. autocomple chevronSVG should not be scaled down too much DONE
+DONE 179. change placeholder/error names: bookmark/tab DONE
+DONE 180. include single spaces in error names DONE ("words")
+XXX 181. white icons on Tabs not contrastive enough on hover XXX
+DONE 183. Column forwardRef??  DONE (used for size hook) DONE
+XXX 184. newTab isThisFirstRender not working. XXX not needed anymore
+DONE 185. react ridge state: non subscribed to changes if uses outside a component: problem in Tab? move reducer inside the component? DONE
+XXX 186. move color function out of Tab XXX
+??? 187. new Rss, new Note - get rid of bookmarks ??
+DONE 189. convert all bookmark/tab indexes to find() / filter() methods !! DONE
+DONE 190. !!! delay problem for closing Tab content by useEffect DONE (
+  solved be adding additional condition for rendering editables (render if tabOpenData === tabID)
+  this way editables wont appear on screen, even before useEffect will close them
+) DONE
+DONE 191. upperVisState should be joined with tabVisState - useState & useEffect instead - inefficien DONE 
+XXX 192. "reset all tab colors to default" of make it realy change all colors in the app XXX
+DONE 193. less Colors for columns if less columns are displayed DONE (diagonal line)
+DONE 194. Not - text overflow if a string contains many letters with no space? DONE (overflow-hidden)
+DONE 195. upperUi colors settings -> change positioning of colors grid on small screen sizes DONE (change to left in all cases)
+DONE 196. restrict naming size for tabs, boomarks etc. DONE (truncate className instead)
+DONE 197. select border color for Tab (whitish?) DONE
+DONE 198. tab colors changing low performance! DONE
+DONE 199. consitent errors! external error file DONE
+DONE 200. input paddings DONE
+DONE ? 201. rss title & link not exactly aligned ? DONE
+DONE 202. rss globalSetting! DONE
+DONE 203. rss -> displays only one feed even if two rss tabs are open DONE
+DONE 204. rss -> non https feeds not working (work well actually on chrome with cors dis, it was a cors problem),
+ non xml rss feeds not working (science alert) (made in working by add) DONE
+DONE 206. newBookmark, editBookmark left paddings DONE
+XXX 207. should Tab also have upper border ?XXX
+DONE 208. closeAll not working fully (not closing tabs) DONE (resets visibility to default)
+DONE 209. closeAll not visible on background DONE
+DONE 210. test different background Img DONE
+DONE 211. change index logic to find filter etc. (GapAfterTab) DONE
+XX ? 212. less confusing drop? now are different colors right after the Tab and below ? XX
+??? 213. not obvious how to close note if opened by clicking on text ???
+DONE 214. closing all windows also when dragging DONE
+DONE 215. background color does not stretch all the way down! DONE (see notes)
+DONE 218. rss, bookmark & notes color: choose one for all/NOte does not look good? DONE
+DONE 219. get rid of useSize/dimensions hook? DONE
+DONE 221. upper right interface background doesn't look good with light image bg/ inconsisten with upper left interface? DONE
+DONE 223. column color cntrl don't work properly if bg img is on DONE
+DONE 224. reducing nr of columns should put all tabs in lower ammount of columns? DONE
+XXX 225. bigger x gap on columns on sm only? XXX
+XXX 226. UpperRightUI borderGray vs UpperLeftMenu opacity-80 consistency
+XXX 227. perfomance problems when dragging XXX
+XXX 228. bg settings- underline selected to be consistent? XXX
+??? 229. bug: selection border sometimes doesn't work on UpperLeftMenu colors ???
+DONE 230. check is lazy state initialization is needed somewhere (for heavy computations) DONE (mainly generateTags/generateBookmarks)
+XXX 230.5 longer "title" in "note" Tab? XXX
+DONE 231. test rss description on all working rsss DONE -> error in one case
+DONE 231.5 make gray border for NoteInput etc. (similar to to EditTab) ? DONE
+DONE 232. ColumnColor selection doesn't work properly if "one color for all columns" option is set DONE
+DONE 232.5 bookmark_lowerUI saveSVG should be inactive if bookmarkComponentType === "edit" DONE
+DONE 233. newBookmark newTab titles upperUI DONE
+X ??? XXX 233.5 search component for bookmarks? XXX ???
+XXX 234. optional/conditional getting rid of border on UpperRightMenu? XXX
+DONE 234.5 bug: editing bookmark -> not posiible to add new tag -> the folder dissapears DONE
+DONE ?? 235. why most right icons on UpperRightUI are bold?  ?? DONE (different stroke width on svgs - leave as it is?)
+??? DONE 235.5 editTab: changing bookmarks alone doesn't enable saveSVG DONE ???
+??? +  log error about memory leakage eg. when editing links (only in this case) ??? the error seem to disappaer
+DONE 236. editTab: center Save & Cancel 
+(one padding removed, but it is still not centered - on purpose, invisible p to the left) DONE
+DONE 237. make animations for save & cancel SVGs? or on all svgs? DONE
+DONE 238. newTab vs newBookmark save & cancel centering? save icon is cut when trying to center! DONE (bug? px wide div have to be kept for some reason)
+DONE 239. get rid of "else" statements DONE (two cases only)
+DONE 240. Reset should be positioned more to the left if image bg is on DONE
+DONE 241. Icons to clotted on smallest screen size? make UpperRightMenu more clotted on small screen? (make search UI first!) DONE
+DONE 242. make note about setTimout in Tab DONE
+DONE 243. column colors two components - redundant? DONE (unified)
+DONE 245. change all selections to XXXshadowXXX wide gray border (experiment more?)(like in UpperLeftMenu) DONE
+DONE 246. change all border for colors to thinner DONE
+DONE 247. redundant code in SingleColor_DefaultAndColumn / setDefaultColorsFor(change/simplify) DONE
+DONE 248. different hover effect if one color for all columns is set DONE
+XXX 250. logo? XXX
+DONE 251. css method to get rid of input numbers' arrows -> make them invisible DONE (custom.css file)
+DONE 252. chevrons for selectables are sometimes in wrong state? DONE
+DONE 253. bookmark: add rssError (similar to noteError?) DONE
+DONE 254. bookmark (& RSS?): add link errors! DONE
+DONE 255. closing of previously opened colors/edits from the other column should be first (not a moment when they are both visible) DONE
+DONE 256. tab & editTab errors move out DONE
+DONE 257. "always opened" -> opened by default DONE
+XXX 259. highlight in red non existing boookmarks in newTab/EditTab? XXX
+DONE 260. editTab etc. lower border style when selectable are on DONE
+DONE 261. input borders more visible? DONE
+DONE 262. min-w-0 needed or not? not needed, w-full instead DONE
+DONE 263. keyboard controls (arrows and enter) for Selectables! DONE
+DONE 264. bug: wasAnythingClicked on NewBookmark and lower bookmark!!!! when choosing tags by clicking DONE
+DONE 265. closing selectables on error (eg. title format error) DONE
+DONE 266. ? before dot, new syntax being automatically added sometimes? DONE
+DONE 267. bookmark_newAndEdit -> render 3 versions of a component instead of 2?? with different props DONE
+DONE 268. tagsInputStr are not being sorted alphabetically DONE
+DONE 270. all tags input right margin DONE
+XXX 271. all tags id naming change XXX
+DONE 273. xxX info that new link will be an all tag DONE (placeholder info) DONE
+XXX 273.5 highlight tab for which bookmark is added automatically, make all bookmarks appear again if hidden? XXX 
+DONE 274. title & RSS link: smaller right margin! DONE
+DONE 275. newTab (& newBookmark & bookmark_lowerUI) upperUI margin above btns is too big DONE
+XXX 276. tab editing -> should opening it increase columns size also as a side effect? (check after background img problems are fixed) XXX
+XXX 277. background img setting -> revert to aligning to left XXX
+??? 278. background img zooming back after clicking any settings (not a problem anymore?) ???
+DONE 279. color setting -> rename to tab setting/ "reset tab colors to default" DONE
+DONE 280. responsive upperUI settings size DONE
+XXX 283. errors reducers? XXX
+DONE 284. EditTab: rss & note (&folder)-> make new components! DONE 
+DONE 285. rss globalSetting styling DONE
+DONE 286. change many find() by tabID to passing props - eg. in RSS components, editTab, noteInput DONE
+DONE 287. rss error handling: catch error for data and description (cnn rss description crashes the app) DONE
+DONE 288. rss: make logic to add ?format=xml at the end if link is not working (worked for sciam)
+  (try catch logic added)  DONE
+XXX 289. making dragging color more contrastive on certaing backgrounds (grays)/ test on diff img backgrounds XXX
+XXX 290. SingleBookmark don't look good on lightest columns XXX
+DONE 293. upperVisDispatch -> color selectable should be gone when closing all DONE logic moved to upperReducer
+DONE 294. column should larger be defaul - so colors/editables are not cut by overflow-hidden! DONE (see notes)
+DONE 295. UpperRightMenu should close at least editables in lowerUI
+ (closing editables/colors if rss setting are clicked) DONE
+DONE 296. upperVis controlling tab state -> flickering problem
+     (new state property in upperVisState, in Tab -> useEffect to change it immediately to true again) DONE
+DONE 298. some effect when hovering over bookmarks? DONE
+DONE 299. upperLeft UI should not close tab content! DONE
+DONE 300. no img background - X get rid of lightest colors? X (make lower border in noteInput instead!) DONE
+???302. sorting method???
+DONE 303. better borders in color selecting DONE
+??? 304. react query devtools not working ???
+DONE 305. columnColor not being reduced in numbers if "one color for all columns" is set DONE
+XXX 306. new rss & new tab: make it smaller? XXX
+DONE 307. Selectables -> truncate (and should appear on one line only) - the stick out if too long! DONE
+DONE 308. login DONE
+DONE 309. UpperRight Menu -> make it possible to close by clicking on the background (e.stopPropagation() on immediate div child) DONE
+DONE 312. error when deleting folder automatically if it is empty -> Tab -> currentTab problem DONE
+DONE 313. make gray button disabled! eg save SVG DONE (return if nothings changed)
+DONE 315. gray area (when clicking settings) does not expand to whole page (hidding scrollbar in Main instead)  DONE
+DONE 316. background colors selection not visible on black (whitish border with z-50) DONE
+XXX 317. white border selection problem -> takes too much space to the left. modify adjacent border colors? XXX
+DONE 318. useEffect -> some should be unmounted? (only linsteners,
+ counters etc. should be removed) DONE
+DONE 320. one color for all columns: when selected, make border collapsed DONE
+DONE 323. newFolder newRSS: better input alignments (flex-none on labels to the left) DONE
+DONE 324. delete all btn for selectables DONE
+DONE 325. xxx open popup with 3 default images to choose xx -> chosing enablem in Background Settings without popup DONE
+DONE 326. chevronDown & selectableVis -> unify logic! DONE
+DONE 327. add error to editTab to all only unique titles! DONE
+XXX 328. bigger gap after tab on smaller screen sizes when column is empty? XXX
+DONE 329. cleaning unused lines DONE
+DONE 331. unmounted component error (err mentioned alread?) / error in console.log if empty tag auto deletes itself
+also when dragging tabs to empty cols! (fixed with transition from ridge state to zustand) DONE
+DONE 332. make biggest components smaller/extaract more funcions out? (max 500 lines of code) DONE
+DONE 333. clean tailwind.js in the end DONE
+DONE 334. saveSVGs onClick -> convert code to functions DONE
+DONE 335. RSS settings - date & description better styles DONE
+DONE 336. Rss SingleLink - empty?? (deleted) DONE
+DONE 337. rss date formatting DONE
+DONE 338. aligning left-hand text with right-hand input -> do it without margins! (flex-none instead) DONE
+DONE 339. move note & rss edit errors lower DONE
+DONE 340. allow trailing coma in selectables DONE
+DONE 341. bookmark_lowerUI -> divide function to new & edit (new & edit render components added) DONE
+DONE 342. chevroDown: lower it so it will be on the level of "x" (plus flex-none added) DONE
+DONE 343. saveSVG still being cut on firefox! DONE (w-1 instead of w-px)
+DONE 343.5 make column appear thinner - border? (tabs seem to stick out) - border in Column DONE
+DONE 344. NoteInput: make better bg for IMG background version DONE
+XXX 344. get rid of border-b in img mode on note input when bg is transparetn? (light bg problem) XXX
+DONE 345. background color setting -> no defualt color selection DONE
+DONE 347. touch screen compatibility? DONE
+DONE 348. background colors list to the left? DONE
+DONE 349. svg error still! on lower ui (solution: setting fixed width to svg) DONE
+DONE 350. can't access tab options with touch DONE
+DONE 351. ColorsToChoose_Default - control positioning by props, not inside components DONE
+DONE 352. clear svgs DONE
+DONE 353. SingleColor_DefaultAndColumn SingleColor_Column_Img unify? DONE
+DONE 354. limit column width? -> make UpperLeftUI part of 1st col, UpperRightMenu part of last col,
+    in Grid: justify-content center & set Cols to repeat minmax(0,<maxwidth>) DONE
+XXX 355. upperRightUI: Note to close to the lower svgs?XXX
+DONE 356. selectables bug: no list if string lenght will be 0 DONE (now opens on change, or with arrow down)
+DONE 356.5 newTab newBookmark EditTab bookmark_lowerUI -> change bookmarks/tags naming to selectables, extract functions DONE
+DONE 357. cant drag tabs with touch (react-dnd-multi-backend) DONE
+DONE 358. bug -> when on sm or lower (one col displayed) cannot drag tabs properly DONE
+DONE 359. tab open/close randomly (not randomly, but state of the prev component was preserved) when dragging? (all) DONE
+(opened state is in global state now)
+DONE 360. newTab etc. enter to save (implemtenet) & esc to cancel keyboard (not implemented in the end) ?
+     move handleKeyDown from editTab_folder to editTab_main (not moved! saveFunc from editTab_main called) DONE
+DONE 361. error object in state? check how many renders are there (1 only either way) DONE
+DONE 362. selectables filtered alphabetically? DONE
+XXX ?? 363. more professional selectables?   ?? XXX
+DONE 364. all settings in one in case of xsScreen? DONE
+DONE 365. colorSettings -> make large version same as xs? DONE
+DONE 366. bug-> paddingAdded when scrollbar in now visible -> fixed by comparing <html> scrollHeight & clientHeight DONE
+DONE 366.5 when scrollbar is being changed to padding right, gray background is visible
+      (setting padding on main instead) DONE
+DONE 367. dragging hover effect: change it on in 2x2 & 3x1 col cases (overflow-hidden is back) DONE
+DONE 368. background colors:  make white border on columns to the right? DONE
+DONE 369. initial colors in global state -> import instead of hardcoding DONE
+XXX 370. change colors data to objects? XXX
+DONE 371. is there a way to do less repeats in if( || || ||)? typescript? no - fixed wrong use of || || DONE
+??? 371.5 fixed position of upperMenu?
+/ UpperUI should be higher on small screens? XXX  (btn: scrollUp?) ???
+DONE 372. svg for loginOut? DONE
+DONE 372.5 popoup for messages for user (eg. logged out, tab created etc.) DONE
+DONE 373. xs screen expendable svg to aligned well DONE
+XXX 376. selectables "x" center vertically?XXX
+DONE 374. make upperUI adding component work same as settings -> close when clicking on gray background & hide scrollbar DONE
+DONE 375. invalid display of upperUI pseudoModal (fixed insead of absolute) DONE
+DONE 377. padding right lowerbookmark editTab & editBookmark unite DONE
+DONE 377. "error fetching data" & loading.. non visible on dark background? DONE
+DONE 378. delete inv chevrons in uppperUI DONE
+DONE 378.25 bug: Reset off not working properly when locking tabs (changed in editTab()) DONE
+DONE 378.5 yellow columns when img is on -> change note or yellow to gold DONE
+XXX 379. automatic tab closing/opening after locking doesn't work correctly (function) XXX
+DONE 379.5 bring back automatic closing/opening after locking (when state will be in its final form) 
+   (local opened state in Tab, depending on opened state from global state)  DONE
+DONE 380. "lock as opened by default" better? DONE
+DONE 381. use portals for lowerUI popups? DONE
+XXX 382. upperUI scroll still visible when resizing browser down (not visible anymore somehow) XXX
+DONE 383. many bookmarks in a Folder -> newBookmark or editBookmark clashes visually? (inner shadow added) DONE
+DONE 384. bug: adding new tab to empty column doesn't work ->DONE
+DONE 385. change bookmark_lowerUI & editTab bg (different gray?) 
+    so it won't clash with one of the background cols (warmGray-100) DONE
+DONE 386. xs: flickering of settings (those with 2 size versions) when using Settings_inner_xs
+DONE 387. innerShadow or other styling on inputs? (darker upper border plus hover effect) DONE
+     (lazy init state from upperVisState, Main -> actions depending on window size) DONE
+XXX 388. disable input in newTab? XXX (no because it works as a filter also now)
+DONE 389. cursor start/end in input for selectables (e.preventDefault())DONE
+XXX ? 390. selectables -> not visible if input is empty after typing non existent selectable ? (could not reproduce) XXX
+DONE 391. scrollbar visibility: gray background wrong if scrolldown before clicking settings etc.
+DONE 392. div spanning rest of the parent div but without overflow-hidden  DONE (flex grow)
+DONE 393. wrap SVGs with buttons? for better keyboard (settings svgs not wrapped with btns) DONE
+DONE 394. uiDefual colors missing on newTab & newBookmark DONE
+DONE 395. tab with "ALL_TAG" special look? (mono font) DONE
+   (h-full inseatd of h-screen) DONE
+DONE 396. gray-100 on Upper UI bg? DONE
+DONE 397. focus on title on upperUI components mount DONE
+DONE 398. ts-ignors -> get rid off, at least for refs (left only for react-dnd in App) DONE
+DONE 399. make links working!! DONE (direct link has to be copied - hint in an error) DONE
+XXX 400. error - text-center? XXX
+DONE 400.5 rss - extra margin for errors DONE
+DONE 401. check rss pagination && chevrons (1 page too far) DONE
+DONE 402. chrome Tab titles too high (better) DONE
+DONE 402.5 Login input not aligned (fixed width of div, w-full input)DONE
+DONE 403. globalSettings -> XXcloseAllTabsXX change rss settings immediately if description or date is changed (
+  no useState or useEffect in RSS_reactQuery, regular vars insteat
+)DONE
+DONE 404. custom focus rings DONE
+XXX 405. less ugly editTab edit new bookmark color?, XXX
+XXX 406. RSS edit -> "RESET settings to default"? XXX
+XXX 407. globalSettings -> cols number too easy to change? XXX
+DONE 408. all tabs - wider letter spacing? DONE
+DONE 408.5 fix error: npx browserslist@latest --update-db DONE
+DONE 409. vulnerabilities DONE
+DONE 410. auto-focus on lower UI also DONE
+DONE 411. new&edit lower UI with longer TAB contetn -> implement contrast to the content? (darker border added) DONE
+DONE 412. bookmark lower UI edit & editTab: better contrast DONE
+DONE 413. bookmark edits: should be opening, not toggling! DONE
+DONE 413.5 check if overflow-hidden is needed (flex growth etc.) -> 
+DONE 414. styling last gap if short (column color visible) and empty column color visible when draggin sth on it DONE
+change bookmark_lowerUI (flex-grow!) DONE
+DONE 414.5 bookmark Edit should be shown instead of bookmark, not on top of the tab? DONE
+DONE 415. newBookmark and editTab color too dirty  when background on? DONE
+DONE 418. app structure notes DONE
+DONE 419. logout animation wheh login anmiation is still on DONE
+DONE 420. message popup better styling DONE
+DONE 421. make max col width smaller DONE
+DONE 422. different accountin for right scroll on small scrren DONE
+DONE 423. bg colors wrong position when less than 4 cols are set DONE
+DONE 424. message - make it smaller on xs DONE
+DONE 425. rightUI wrong positioning if going from small to bigger screen! DONE
+DONE 426. message position matching upperRightUI ?? DONE
+DONE 427. make limit column growth option DONE
+DONE 428. make it possible to resize down single col width (
+  possible to resize when col limit is on, otherwise - browser min width limit) DONE
+DONE 429. UpperRightUI not resizing down on chrome on browser DONE (xs breakpoint changed to 505)
+DONE 430. 5 globalSettings upperRight svg without border DONE
+DONE 430.5  declutter globalSettings DONE
+DONE 431. noteSVG position DONE
+DONE 432. no uiCompmementary color for black DONE
+DONE 433. test with Lighthouse (acccessibility improved, with exception to tabIndices, performance - for backend) DONE
+DONE 434. Settings -> make it controlable by keyboard DONE
+DONE 435. seperate types for different actions DONE
+X 436. right scroll flickering when disappearing problem? X
+DONE 438. clean unused deps ("@reach/rect" use before for measuring elements) DONE
+DONE 439. central styles in tailwind.css for focus expand and clean DONE
+DONE 441. focus shouldn't be possible when settings popup are visible - disable btn's conditionally? DONE
+DONE 442. tab titles are cut ! (g's) DONE
+XXX 443. settings popups - initial focus should be set?  441. already fixed thisXXX
+X 444. make plusSVG smaller so better focus look? X
+DONE 445. RSS  focus outlines & disable it conditionally DONE
+DONE 445.5 note focus outlines  & disable it conditionally (tabIndex attibute!) DONE
+DONE 446. FAQ/about note DONE
+DONE 447. proper starting links DONE
+DONE 448. check tailwind way of outlines for keyboard only (works on edge, firefox and chrome) DONE
+XXX 449. disable all btn conditionally?? (react-focus-lock used instead) XXX
+DONE 449.5 new Folder col focus selection DONE
+DONE 450. Tab svgs should be selectable on focus (with the use ofglobalState) DONE
+DONE 451. event codes: Enter | NumpadEnter ! DONE
+DONE 452. react-focus-lock for settings etc.? DONE
+DONE 453. editSingle bookmark z-index problem when setting popus are on, check others DONE
+DONE 454. lightBlue to sky renaming? how to update color palette DONE
+DONE 455. when adding new bookmark to all bookmarks: selectables don't auto complete?
+XX? 456. unify SingleColor_DefaultAndColumn and SingleColor_Tab & SingleBackground? ?XX
+ (all bookmarks tag is not being displayed anymore) DONE
+?? 457. ColorsToChoose_Tab: lines not parallel! (ilusion?) ???
+DONE 458. diff focus order - Upper Left Menu first DONE
+XX 459. first render: problem with single colors for columns focus selection (not a problem: it doesn't happen on click) XX
+DONE 460. make focus outlines more visible (better contrast) DONE
+DONE 461. focus should start on already selected color - tabs & columns color & background colors DONE
+?DONE 462. Reset doesn't work properly, only on first Tab!
+ DONE ? (fixed by setting delay on Grid useEffect)
+ DONE 463. ColorToChoose_Background should not close after selecting, only after interaction with other components
+(<button> cannot appear as a descendant of <button>.) DONE
+DONE 464. all features controlable by keyboard DONE 
+DONE 465. Reset: initially disabled? DONE
+DONE 466. Close Default Tab Colors by Escape DONE
+XX? 467. unify ColorsToChoose_DefaultAndColumn and ColorsToChoose_Tab+  ?XX
+DONE 468. visDispatch rename to tabVisDispatch DONE
+DONE 469. close tabColors when clicking color in colors settings (should be same as in globalSettings) DONE
+DONE 470. change excessive if statements (columns...) to RegEx DONE
+DONE 472. app title instead of react App DONE
+DONE 473. react context for upperVis & tabVis DONE
+DONE 474. bug: cannot delete note & RSS when they are open (fixed with optional chaining) DONE
+DONE 474.5 ColorsToChoose_DefaultAndColumns: useEffect deps? check all deps after zustand transition! DONE
+DONE 475. transition to zustand DONE
+DONE 476. Tab: setTabOpenedData change to zustand, otherwise tab toggle won't work DONE
+DONE 477. deleting tag in bookmarks: check if it works porperly in the end DONE
+DONE 478. Tab: check edit DONE
+DONE 479. tabID, bookmarkID - unify types! DONE
+DONE 480. GapAfterTab dragWrapper change to tabDrag from zustand DONE
+DONE 481. useBookmarks, useTabs: move data elsewhere, leave methods only DONE
+DONE 482. cannot save after reseting rss settings to default: check if it worked with ridge state DONE
+DONE 483. Tab being dragged color not working? DONE
+DONE 484. when clicking a Tab/tab editables/Reset off: "Cannot update a component (`Tab`) while rendering a different component (`Tab`)".
+fixed by wrapping hooks from zustand with setTimout. (setTimeout had to be in the reducer!) In Tab problem was occuring\
+ if there was anything dependend on the state being set by setTabOpenedState. Problem because hooks from zustand change
+  tab data before render is finished? DONE
+X? 485. multiTouch backend: requires react 16 ?X
+DONE 487. make smaller bottom margin in UpperUI/LowerUI in case or errors,
+ but larger if there are no errors? DONE
+DONE 488. upperUI newBookmark: url error alternating with tag uniqness error?
+fixed by putting regex inside the function!! (?) DONE
+ DONE 489. update app tree DONE
+DONE 490. divide utils&state folder DONE
+DONE 491. apply url-regex-safe instead of RegEx for urls DONE
+XX 492. Components CamelCase and empty obj warnings - ignore? XX
+DONE 493. Padding right toggle for scrollbar not working? (
+  bug caused by deletion of document in body from useEffect deps, as
+  eslint suggested previously... reverted to previous version
+) DONE
+DONE 494. save state to storage with zustand? DONE
+DONE 495. fix vulnerabilities
+(updated from "immer": "^7.0.14", react-script moved to dev deps, 
+run npm audit --production
+) DONE
+DONE 496. sort bookmarks in folders! DONE
+DONE 497. more settings to storage! DONE
+DONE 498. bug: cannot edit Tab - error DONE
+DONE 499. check images (size/resolution, default doesn't look good? ->
+1st picture changed) DONE
+DONE 500. background image on: flickering when image is resizing when scroll bar is hidding (
+  react-remove-scroll implemented for picBackgroun ON mode only
+)DONE
+DONE 501. persist column colors & background colorss, default colors DONE
+X 502. background img single colors to choose: 1st color tranparent instead of white? X
+DONE 503. remove unwanted files DONE
+DONE 504. final tests
+  V Column colors, background colors/ image changing, tab colors, def. tab colors, def tab colors reset 
+  V Reset/ tab locking
+  V Lower ui deleting, editing, dragging
+  V priorities
+  V upperUI new
+  V upperUI settings
+  v RSS (tests on chrome)
+  v thinner screen test (upperRightUI)
+  v general test on chrome
+  v errors tests
+  v xs screen & limit col growth test
+  v keyboard control test
+  v phone-like test v DONE
+DONE 505. update NOTE above in this file! DONE
+DONE 506. close Tab colors after pressing reset in Colors Settings (already implemented when choosing def colors) DONE
+DONE 507. adding new bookmark/ editing new bookmark: only one new tag (last one) of specified is being added! DONE
+x ??? 508. disable page scrolling on rss settings when cursor is over inpute (chrome only problem, left as it is)  ??X
+DONE~ 509. not possible to use mouse wheel on general settings' rss number input if bg img is on
+   (react-remove-scroll package) -> mouseWheel blue event (not perfect solution)
+    wheel use disabled on all rss number inputs ~DONe
+DONE 510. bookmarks and tabs unify title error & bookmarks/tags format (space allowed!) 
+DONE 511. tab title duplication error not working (for TAb edit) DONE
+DONE 512. newTab newBookmark etc. -> put SaveSVG somewhere clickable even if all selectables are open
+  (checkSVG) DONE
+DONE 513. editTab: correct lower margin so lower SVG will not be only partially visible in some cases (newTab also a little!)
+   (NewTab && editTab in case of tabType === "folder" changed) DONE
+DONE 514. when small UpperRightUI is activated -> remember which of the settings
+   was clicked last (upperVisContext entry added)DONE
+DONE  515. globalSettings small version doesn't initiate always when needed
+  DONE 516. TabIndex problem: after selecting column color it will focus on columns insteat of uppperUI DONE
+  DONE 517. Escape should work also on upperUi DONE
+ (when column growth is limited) (Settings_inner_xs vis changed) DONE
+  DONE 518. UpperUi xs setting & UpperLeft columns: focus should be set on svg/component representing curretn active settings DONE
+  DONE 519. focus on first ColumnColor when one color for all columns is set? DONE
+  DONE 520. delete empty obj from Props (except one in Profile_input) DONE
+  DONE 521. UpperUi xs setting: focus should be set on svg/component representing curretn active settings DONE
+  DONE 522. XS cogSVG is not focused back after closing settings DONE
+    ??  523. error: input value is null somewhere? devtools / no nr displayed on rss input number edit Tab & Settings!
+  (Warning: Received NaN for the `value` attribute. If this is expected, cast the value to a string.) (can't replicate the error) ??
+  DONE 525. SingleColor upperUI focus when oneColorForAllCols is set -> focus should be visible on all four SingleColors
+  DONE 526. get rid of underscores on most/some components DONE
+  (ColumnColor_OneColorX4 added) DONE
+  DONE 527. set proper focus after presing Escape in BackgroudColor upperUi! DONE
+  DONE 528. ColumnColor_upperUI check for excesive props DONE
+  DONE 529. proper focus after using Reset with keyboard DONE
+  DONE 530. Reset focus dependint on how many column settings DONE
+  DONE 531. in case of one column only -> Right settings XS should be visible all the time if colWidth is limited DONE
+  DONE 532. settings should be more aligned to the column if the scrollbar is being removed DONE
+  DONE 535. BackgroundColor to choose -> align depending on how many cols are displayed! DONE
+  DONE  536. LeftMenu for oneColorForAllCols should shrink with decreasing column numbers DONE
+  DONE 537. unwanted focus on BackgroundColor on page refresh DONE
+  DONE 538. close selelectable on error everywhere (not working on all 3 bookmarks for url error) DONE
+  DONE 540. paddingRight should dissapear along with check and Xsmall SVG (problem with "choose at least one visibility" ) DONE
+  XX 539. make alternative Save (checkSVG) appear only if selectable list is visible? XX
+  XX 542. should checkSVG be visible even on empty selectables? XX
+  DONE 541. selectable placeholders - smaller font? (smaller font in edit folder) DONE
+  DONE 542. Make it possible to select text in notes (double-click to edit notes) DONE
+  DONE 543. bug: proper positioning of colorsToChoose in colorSettings DONE
+  DONE 544. when there is oneCol only and colGrowth is limited -> not possible to access all settings if screen is wider DONE
+  DONE 548. repo proper code content DONE
+  DONE 549. repo readme DONE
+  DONE 550. make initial rss linkd https only, put info DONE
+  DONE 551. second rss link error if http is being used DONE
+  DONE 552. Reset SVG instead of Reset DONE
+  XXX 553. default column colors, change to matching if background mode is off
+  (contrastive colors seems to work better in that case))XXX
+  DONE 554. tabs draggable to first position DONE
+  DONE 554.5 make all tabs draggable to other tabs? DONE
+  DONE 557. tab that is being dragged into -> make it content somehow different on hover DONE
+  DONE 556. UpperRightMenu xs -> change SVG to plus on the left alone? DONE
+  DONE 558. bug: cannot select selectables with touch (on highlight only conditions deleted)DONE
+  DONE 559. reset svg not always in the middle (marginLeftAdded) DONE
+  DONE 560. bug: wrong margin on global settings when on mobile! -> make it dependend on scrollbard width DONE
+  X 561. hide column & background color options () X
+  XX 562. selectables: problem with highlight on chrome? XX
+  DONE 563. disable drag and drop option (for mobile) DONE
+  DONE 564. folders instead of tags DONE
+  DONE 565. disable crossSVG when disableDrag setting is on DONE
+  DONE 566. smaller resetSVG icon? DONE
+
+
+Browserslist: caniuse-lite is outdated. Please run:
+npx browserslist@latest --update-db
+
+Why you should do it regularly:
+https://github.com/browserslist/browserslist#browsers-data-updating
+

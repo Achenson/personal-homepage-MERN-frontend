@@ -1,0 +1,69 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  .focus-1 {
+    @apply focus:outline-none focus-visible:ring-1 ring-blueGray-300;
+  }
+
+  .focus-1-dark {
+    @apply focus:outline-none focus-visible:ring-1 ring-blueGray-400;
+  }
+
+  .focus-1-darkGray {
+    @apply focus:outline-none focus-visible:ring-1 ring-gray-400;
+  }
+
+  .focus-1-inset {
+    @apply focus-1 ring-inset;
+  }
+
+  .focus-1-inset-dark {
+    @apply focus-1-dark ring-inset;
+  }
+
+  .focus-1-inset-darkGray {
+    @apply focus-1-darkGray ring-inset;
+  }
+
+  .focus-1-offset {
+    @apply focus-1 ring-offset-1 ring-offset-gray-100;
+  }
+
+  .focus-1-offset-dark {
+    @apply focus-1-dark ring-offset-1 ring-offset-gray-100;
+  }
+
+  .focus-2 {
+    @apply focus:outline-none focus-visible:ring-2 ring-blueGray-300;
+  }
+
+  .focus-2-dark {
+    @apply focus:outline-none focus-visible:ring-2 ring-blueGray-400;
+  }
+
+  .focus-2-veryDark {
+    @apply focus:outline-none focus-visible:ring-2 ring-blueGray-700;
+  }
+
+  .focus-2-inset {
+    @apply focus-2 ring-inset;
+  }
+
+  .focus-2-inset-dark {
+    @apply focus-2-dark ring-inset;
+  }
+
+  .focus-2-inset-veryDark {
+    @apply focus-2-veryDark ring-inset;
+  }
+
+  .focus-2-offset {
+    @apply focus-2 ring-offset-1 ring-offset-gray-50;
+  }
+
+  .focus-2-offset-dark {
+    @apply focus-2-dark ring-offset-1 ring-offset-gray-50;
+  }
+}
