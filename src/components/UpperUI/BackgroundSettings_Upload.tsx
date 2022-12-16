@@ -49,7 +49,8 @@ function BackgroundSettings_Upload({
 
     let backgroundImgUrl_cut =
       backgroundImgResults?.data?.backgroundImg?.backgroundImgUrl?.replace(
-        /background_img\/\w+\/\d+_/,
+        /https:\/\/smoothtabs-api.onrender.com\/background_img\/\w+\/\d+_/,
+        // /background_img\/\w+\/\d+_/,
         ""
       );
     let backgroundImgUrl_cut2 = backgroundImgUrl_cut?.replace(/\.\w+$/, "");

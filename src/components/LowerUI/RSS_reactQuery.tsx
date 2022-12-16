@@ -65,7 +65,8 @@ function ReactQuery({
     let baseFetchUrl: string;
 
     if (environment === "production") {
-      baseFetchUrl = "/fetch_rss/";
+      baseFetchUrl = "https://smoothtabs-api.onrender.com/fetch_rss/";
+      // baseFetchUrl = "/fetch_rss/";
     } else {
       baseFetchUrl = "http://localhost:4000/fetch_rss/";
     }

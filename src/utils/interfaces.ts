@@ -89,9 +89,6 @@ export interface GlobalSettingsState {
   colColorImg_2: string;
   colColorImg_3: string;
   colColorImg_4: string;
-
-
-
 }
 
 export interface UpperVisState {
