@@ -165,6 +165,11 @@ function App() {
           }
 
           return { accessToken: res.accessToken as string };
+        })
+        .catch((err) => {
+          console.log("refresh token error");
+          console.log(err);
+          return null;
         });
     }
   }, [authContext.isAuthenticated, authContext.accessToken, loginAttempt]);

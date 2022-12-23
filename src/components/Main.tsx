@@ -150,8 +150,8 @@ function Main({
   // something has to be assigned, otherwise -> ts error in MainRoute component
   let backgroundImgUrl: string | null = null;
   
-  console.log("data_backgroundImg");
-  console.log(data_backgroundImg);
+  // console.log("data_backgroundImg");
+  // console.log(data_backgroundImg);
 
   if (data_backgroundImg) {
     
