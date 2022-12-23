@@ -438,7 +438,6 @@ function EditTab({
               }}
             />
             {/* {tabType === "folder" && tabID !== "ALL_TAGS" && ( */}
-            // @ts-ignore
             {
               // @ts-ignore
             tabType === "folder" && currentTab.deletable && (
