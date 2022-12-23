@@ -85,7 +85,8 @@ function MainRoute({
       let parsedUrl: string;
 
       if (environment === "production") {
-        parsedUrl = "/" + backgroundImgUrl;
+        // parsedUrl = "/" + backgroundImgUrl;
+        parsedUrl = backgroundImgUrl;
       } else {
         parsedUrl = "http://localhost:4000/" + backgroundImgUrl;
       }
