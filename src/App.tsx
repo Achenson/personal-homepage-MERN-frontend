@@ -34,8 +34,8 @@ if (environment === "production") {
 let refreshTokenUri: string;
 
 if (environment === "production") {
-  refreshTokenUri = "https://smoothtabs-api.onrender.com/refresh_token";
-  // refreshTokenUri = "/refresh_token";
+  // refreshTokenUri = "https://smoothtabs-api.onrender.com/refresh_token";
+  refreshTokenUri = "/refresh_token";
 } else {
   refreshTokenUri = "http://localhost:4000/refresh_token";
 }
