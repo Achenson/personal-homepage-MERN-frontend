@@ -7,6 +7,7 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { authExchange } from "@urql/exchange-auth";
 import { makeOperation } from "@urql/core";
 import jwtDecode from "jwt-decode";
+import axios from "axios";
 
 import MainWrapper from "./components/MainWrapper";
 
@@ -148,29 +149,64 @@ function App() {
       },
     });
 
+    // async function refreshToken() {
+    //   return fetch(`${refreshTokenUri}`, {
+    //     method: "POST",
+    //     credentials: "include",
+    //   })
+    //     .then((res) => res.json())
+    //     .then((res) => {
+    //       console.log("refreshToken run");
+    //       console.log(res);
+    //       // this is also a logout logic if it fails
+    //       loginAttempt(res.ok, res.userId, res.accessToken);
+
+    //       if (!res.accessToken) {
+    //         return null;
+    //       }
+
+    //       return { accessToken: res.accessToken as string };
+    //     })
+    //     .catch((err) => {
+    //       console.log("refresh token error");
+    //       console.log(err);
+    //       return null;
+    //     });
+    // }
+
     async function refreshToken() {
-      return fetch(`${refreshTokenUri}`, {
-        method: "POST",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log("refreshToken run");
-          console.log(res);
-          // this is also a logout logic if it fails
-          loginAttempt(res.ok, res.userId, res.accessToken);
+      // return fetch(`${refreshTokenUri}`, {
+      //   method: "POST",
+      //   credentials: "include",
+      // })
+      //   .then((res) => res.json())
 
-          if (!res.accessToken) {
+      return (
+        axios
+          .post(`${refreshTokenUri}`, null, {
+            withCredentials: true,
+          })
+          // @ts-ignore
+          // .then((res) => res.json())
+          .then((res) => {
+            console.log("refreshToken run");
+            console.log(res);
+            // this is also a logout logic if it fails
+         
+            loginAttempt(res.data.ok, res.data.userId, res.data.accessToken);
+            
+            if (!res.data.accessToken) {
+              return null;
+            }
+            
+            return { accessToken: res.data.accessToken as string };
+          })
+          .catch((err) => {
+            console.log("refresh token error");
+            console.log(err);
             return null;
-          }
-
-          return { accessToken: res.accessToken as string };
-        })
-        .catch((err) => {
-          console.log("refresh token error");
-          console.log(err);
-          return null;
-        });
+          })
+      );
     }
   }, [authContext.isAuthenticated, authContext.accessToken, loginAttempt]);
 
