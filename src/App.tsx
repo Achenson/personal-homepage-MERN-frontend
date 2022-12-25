@@ -26,8 +26,8 @@ const environment = process.env.NODE_ENV;
 let graphqlUri: string;
 
 if (environment === "production") {
-  graphqlUri = "https://smoothtabs-api.onrender.com/graphql";
-  // graphqlUri = "/graphql";
+  // graphqlUri = "https://smoothtabs-api.onrender.com/graphql";
+  graphqlUri = "/graphql";
 } else {
   graphqlUri = "http://localhost:4000/graphql";
 }
