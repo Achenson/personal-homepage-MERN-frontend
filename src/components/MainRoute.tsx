@@ -94,17 +94,17 @@ function MainRoute({
     }
 
     // ===== logic for imgbbb
-    if (
-      picBackground &&
-      defaultImage === "customBackground" &&
-      !backgroundImgUrl
-    ) {
+    // if (
+    //   picBackground &&
+    //   defaultImage === "customBackground" &&
+    //   !backgroundImgUrl
+    // ) {
 
-      setTimeout(
-        () => reexecuteBackgroundImg({ requestPolicy: "network-only" }),
-        1500
-      );
-    }
+    //   setTimeout(
+    //     () => reexecuteBackgroundImg({ requestPolicy: "network-only" }),
+    //     1500
+    //   );
+    // }
     // ======
 
     return undefined;
