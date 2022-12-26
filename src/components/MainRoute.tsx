@@ -102,7 +102,7 @@ function MainRoute({
 
       setTimeout(
         () => reexecuteBackgroundImg({ requestPolicy: "network-only" }),
-        500
+        1500
       );
     }
     // ======
